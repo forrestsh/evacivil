@@ -1,50 +1,13 @@
 import Image from 'next/image'
 import Navigation from '@/components/Navigation'
-import ImageTest from '@/components/ImageTest'
+import Hero from '@/components/Hero'
 
 export default function Home() {
   return (
     <main className="min-h-screen">
       <Navigation />
-      <ImageTest />
+      <Hero />
       
-      {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        {/* Background Image */}
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="/soul-tree.png"
-            alt="Soul Tree - EVA Civil"
-            fill
-            className="object-cover"
-            priority
-            sizes="100vw"
-          />
-        </div>
-        
-        {/* Dark Overlay for better text readability */}
-        <div className="absolute inset-0 bg-black/40 z-0"></div>
-        
-        <div className="text-center z-10 relative">
-          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 drop-shadow-lg">
-            共生 • 智慧 • 新文明
-          </h1>
-          <h2 className="text-2xl md:text-3xl font-semibold text-white mb-4 drop-shadow-lg">
-            EVA Civil：全球共创的未来文明网络
-          </h2>
-          <p className="text-lg md:text-xl text-white max-w-3xl mx-auto drop-shadow-lg">
-            一个以人类共生、灵性觉醒与智慧科技为核心的非营利组织
-          </p>
-        </div>
-        
-        {/* Additional visual elements */}
-        <div className="absolute inset-0 opacity-20 z-0">
-          <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-green-400 rounded-full blur-xl"></div>
-          <div className="absolute top-1/3 right-1/4 w-24 h-24 bg-blue-400 rounded-full blur-xl"></div>
-          <div className="absolute bottom-1/4 left-1/3 w-28 h-28 bg-purple-400 rounded-full blur-xl"></div>
-        </div>
-      </section>
-
       {/* About Section */}
       <section id="about" className="py-20 bg-gray-50">
         <div className="max-w-4xl mx-auto px-6">
