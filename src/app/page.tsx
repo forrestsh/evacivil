@@ -16,23 +16,23 @@ export default function Home() {
             src="/soul-tree.png"
             alt="Soul Tree - EVA Civil"
             fill
-            className="object-cover opacity-20"
+            className="object-cover"
             priority
             sizes="100vw"
           />
         </div>
         
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-green-50/60 to-blue-50/60 z-0"></div>
+        {/* Dark Overlay for better text readability */}
+        <div className="absolute inset-0 bg-black/40 z-0"></div>
         
         <div className="text-center z-10 relative">
-          <h1 className="text-5xl md:text-7xl font-bold text-gray-800 mb-6 drop-shadow-lg">
+          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 drop-shadow-lg">
             共生 • 智慧 • 新文明
           </h1>
-          <h2 className="text-2xl md:text-3xl font-semibold text-gray-700 mb-4 drop-shadow-lg">
+          <h2 className="text-2xl md:text-3xl font-semibold text-white mb-4 drop-shadow-lg">
             EVA Civil：全球共创的未来文明网络
           </h2>
-          <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto drop-shadow-lg">
+          <p className="text-lg md:text-xl text-white max-w-3xl mx-auto drop-shadow-lg">
             一个以人类共生、灵性觉醒与智慧科技为核心的非营利组织
           </p>
         </div>
