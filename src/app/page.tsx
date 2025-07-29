@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Navigation from '@/components/Navigation'
 import Hero from '@/components/Hero'
+import SecureChatFrame from '@/components/SecureChatFrame'
 
 export default function Home() {
   return (
@@ -531,6 +532,7 @@ export default function Home() {
       <section id="contact" className="py-20 bg-white dark:bg-gray-900">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <h2 className="text-4xl font-bold text-gray-800 dark:text-white mb-12">联系方式</h2>
+          
           <div className="grid md:grid-cols-3 gap-8">
             <div className="p-6">
               <div className="text-3xl mb-4">📧</div>
@@ -557,6 +559,9 @@ export default function Home() {
           <p className="text-gray-300 dark:text-gray-400">© 2025 EVA Civil. All rights reserved.</p>
         </div>
       </footer>
+
+      {/* Secure Chat Frame */}
+      <SecureChatFrame />
     </main>
   )
 }
