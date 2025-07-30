@@ -37,7 +37,7 @@ export default function EVAHomepage() {
     const h = canvas.height = 300;
     const cx = w / 2;
     const cy = h / 2;
-    let cells = [{ x: cx, y: cy, r: 2, level: 0 }];
+    const cells: Array<{ x: number; y: number; r: number; level: number }> = [{ x: cx, y: cy, r: 2, level: 0 }];
     const maxLevel = 6;
     const maxCells = 400;
     let rotation = 0;
