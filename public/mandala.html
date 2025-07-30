@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>原型曼陀罗 - EVA Civilization</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+      color: #f4f4f4;
+      font-family: 'Georgia', serif;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+      z-index: 10;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: #e9cf8e;
+      margin-bottom: 10px;
+      text-shadow: 0 0 20px rgba(233, 207, 142, 0.3);
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      color: #88d4ff;
+      margin-bottom: 20px;
+      max-width: 600px;
+      line-height: 1.6;
+    }
+
+    .mandala-container {
+      position: relative;
+      width: 600px;
+      height: 600px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    canvas {
+      border-radius: 50%;
+      box-shadow: 0 0 50px rgba(106, 212, 255, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .controls {
+      margin-top: 30px;
+      text-align: center;
+      z-index: 10;
+    }
+
+    .control-btn {
+      background: transparent;
+      border: 2px solid #e9cf8e;
+      color: #e9cf8e;
+      padding: 10px 20px;
+      margin: 0 10px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .control-btn:hover {
+      background: #e9cf8e;
+      color: #0f0f0f;
+      box-shadow: 0 0 15px rgba(233, 207, 142, 0.4);
+    }
+
+    .frequency-display {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: #88d4ff;
+      font-size: 1.1rem;
+      font-weight: bold;
+      text-shadow: 0 0 10px rgba(136, 212, 255, 0.5);
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    @media (max-width: 768px) {
+      .mandala-container {
+        width: 400px;
+        height: 400px;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .subtitle {
+        font-size: 1rem;
+        padding: 0 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>原型曼陀罗</h1>
+    <div class="subtitle">
+      每个灵魂的原始频率都体现在神圣几何图形中。下方，活生生的曼荼罗旋转着——象征着灵魂进入共振时的形态。
+    </div>
+  </div>
+
+  <div class="mandala-container">
+    <canvas id="mandalaCanvas" width="600" height="600"></canvas>
+    <div class="frequency-display" id="frequencyDisplay">
+      频率: 0.032 · 0.414 · 0.618
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="control-btn" onclick="toggleRotation()">暂停/继续旋转</button>
+    <button class="control-btn" onclick="changePattern()">切换图案</button>
+    <button class="control-btn" onclick="adjustSpeed()">调整速度</button>
+    <button class="control-btn" onclick="resetMandala()">重置曼陀罗</button>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('mandalaCanvas');
+    const ctx = canvas.getContext('2d');
+    const frequencyDisplay = document.getElementById('frequencyDisplay');
+
+    let rotationAngle = 0;
+    let isRotating = true;
+    let patternType = 0;
+    let rotationSpeed = 0.02;
+    let time = 0;
+
+    // 神圣几何图案数组
+    const patterns = [
+      'flower-of-life',
+      'metatron-cube', 
+      'sacred-geometry',
+      'fibonacci-spiral',
+      'golden-ratio'
+    ];
+
+    function drawMandala() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+      const maxRadius = Math.min(centerX, centerY) - 20;
+
+      // 绘制外圈光环
+      ctx.save();
+      ctx.translate(centerX, centerY);
+      ctx.rotate(rotationAngle);
+      
+      // 外圈
+      ctx.strokeStyle = '#e9cf8e';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(0, 0, maxRadius, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // 中圈
+      ctx.strokeStyle = '#10b981';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(0, 0, maxRadius * 0.7, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // 内圈
+      ctx.strokeStyle = '#3b82f6';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(0, 0, maxRadius * 0.4, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // 绘制神圣几何图案
+      drawSacredGeometry(maxRadius);
+      
+      ctx.restore();
+
+      // 更新频率显示
+      updateFrequencyDisplay();
+    }
+
+    function drawSacredGeometry(maxRadius) {
+      const centerX = 0;
+      const centerY = 0;
+      
+      // 中心点
+      ctx.fillStyle = '#e9cf8e';
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, 3, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 六个周围的圆（生命之花模式）
+      const radius = maxRadius * 0.15;
+      const positions = [
+        {x: 0, y: -maxRadius * 0.3},
+        {x: maxRadius * 0.26, y: -maxRadius * 0.15},
+        {x: maxRadius * 0.26, y: maxRadius * 0.15},
+        {x: 0, y: maxRadius * 0.3},
+        {x: -maxRadius * 0.26, y: maxRadius * 0.15},
+        {x: -maxRadius * 0.26, y: -maxRadius * 0.15}
+      ];
+
+      ctx.strokeStyle = '#e9cf8e';
+      ctx.lineWidth = 1;
+      
+      positions.forEach(pos => {
+        ctx.beginPath();
+        ctx.arc(pos.x, pos.y, radius, 0, Math.PI * 2);
+        ctx.stroke();
+      });
+
+      // 绘制连接线
+      ctx.strokeStyle = '#88d4ff';
+      ctx.lineWidth = 0.5;
+      ctx.globalAlpha = 0.6;
+      
+      for (let i = 0; i < positions.length; i++) {
+        for (let j = i + 1; j < positions.length; j++) {
+          const dist = Math.sqrt(
+            Math.pow(positions[i].x - positions[j].x, 2) + 
+            Math.pow(positions[i].y - positions[j].y, 2)
+          );
+          if (dist < maxRadius * 0.6) {
+            ctx.beginPath();
+            ctx.moveTo(positions[i].x, positions[i].y);
+            ctx.lineTo(positions[j].x, positions[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+      
+      ctx.globalAlpha = 1;
+
+      // 绘制动态粒子
+      drawParticles(maxRadius);
+    }
+
+    function drawParticles(maxRadius) {
+      const particleCount = 50;
+      ctx.fillStyle = '#88d4ff';
+      ctx.globalAlpha = 0.7;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const angle = (i / particleCount) * Math.PI * 2 + time * 0.5;
+        const radius = maxRadius * (0.3 + 0.4 * Math.sin(time + i * 0.1));
+        const x = Math.cos(angle) * radius;
+        const y = Math.sin(angle) * radius;
+        
+        ctx.beginPath();
+        ctx.arc(x, y, 1 + Math.sin(time + i) * 0.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      
+      ctx.globalAlpha = 1;
+    }
+
+    function updateFrequencyDisplay() {
+      const frequencies = ['0.032', '0.414', '0.618'];
+      const currentFreq = frequencies[Math.floor(time * 0.5) % frequencies.length];
+      frequencyDisplay.textContent = `频率: ${currentFreq} · 神圣几何`;
+    }
+
+    function animate() {
+      if (isRotating) {
+        rotationAngle += rotationSpeed;
+      }
+      time += 0.02;
+      
+      drawMandala();
+      requestAnimationFrame(animate);
+    }
+
+    function toggleRotation() {
+      isRotating = !isRotating;
+    }
+
+    function changePattern() {
+      patternType = (patternType + 1) % patterns.length;
+      // 这里可以添加不同图案的切换逻辑
+    }
+
+    function adjustSpeed() {
+      rotationSpeed = rotationSpeed === 0.02 ? 0.05 : 0.02;
+    }
+
+    function resetMandala() {
+      rotationAngle = 0;
+      time = 0;
+      patternType = 0;
+      rotationSpeed = 0.02;
+      isRotating = true;
+    }
+
+    // 添加鼠标交互
+    canvas.addEventListener('mousemove', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left - canvas.width / 2;
+      const y = e.clientY - rect.top - canvas.height / 2;
+      
+      // 根据鼠标位置微调旋转
+      const angle = Math.atan2(y, x);
+      rotationAngle += angle * 0.001;
+    });
+
+    // 开始动画
+    animate();
+  </script>
+</body>
+</html> 

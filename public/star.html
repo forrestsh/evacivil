@@ -1,0 +1,98 @@
+<!-- EVA 元胞裂变生长版本（从点 → 三角 → 六边形 → 球） + 动态增强 + 自然扭曲感 + 彩色维度 + 持续生长优化版 -->
+<div class="mandala-bg">
+  <canvas id="cellularMandala" width="600" height="600"></canvas>
+</div>
+
+<style>
+.mandala-bg {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(#0d0d0d, #000000 80%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: -1;
+  overflow: hidden;
+}
+canvas {
+  width: 60vmin;
+  height: 60vmin;
+  background: transparent;
+  filter: drop-shadow(0 0 12px #00ffff55);
+}
+</style>
+
+<script>
+const canvas = document.getElementById("cellularMandala");
+const ctx = canvas.getContext("2d");
+const w = canvas.width = 600;
+const h = canvas.height = 600;
+const cx = w / 2;
+const cy = h / 2;
+let cells = [{ x: cx, y: cy, r: 2, level: 0 }];
+let maxLevel = 6;
+let maxCells = 800;
+const colors = ["#00ffff", "#3b82f6", "#a78bfa", "#f472b6"];
+let rotation = 0;
+let growthIndex = 0;
+
+function drawCell(cell) {
+  ctx.beginPath();
+  const pulse = 1 + 0.08 * Math.sin(Date.now() / 400 + cell.x + cell.y);
+  ctx.arc(cell.x, cell.y, cell.r * pulse, 0, Math.PI * 2);
+  ctx.fillStyle = `hsl(${cell.level * 50 + Date.now() / 50 % 360}, 80%, 60%)`;
+  ctx.globalAlpha = 1 - cell.level * 0.1;
+  ctx.shadowColor = ctx.fillStyle;
+  ctx.shadowBlur = 6;
+  ctx.fill();
+  ctx.shadowBlur = 0;
+  ctx.globalAlpha = 1;
+}
+
+function split(cell) {
+  const angleStep = Math.PI * 2 / (3 + cell.level * 3);
+  let newCells = [];
+  for (let i = 0; i < (3 + cell.level * 3); i++) {
+    const angle = i * angleStep;
+    const baseDist = 20 + cell.level * 10;
+    const distort = 1 + Math.sin(angle * 3 + Date.now() / 500) * 0.25;
+    const dist = baseDist * distort;
+    const nx = cell.x + Math.cos(angle) * dist;
+    const ny = cell.y + Math.sin(angle) * dist;
+    newCells.push({ x: nx, y: ny, r: cell.r * 0.8, level: cell.level + 1 });
+  }
+  return newCells;
+}
+
+function animate() {
+  ctx.clearRect(0, 0, w, h);
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.rotate(rotation);
+  ctx.translate(-cx, -cy);
+  cells.forEach(drawCell);
+  ctx.restore();
+  rotation += 0.0025;
+}
+
+function growStep() {
+  if (growthIndex >= cells.length || cells.length >= maxCells) return;
+  const cell = cells[growthIndex];
+  if (cell.level < maxLevel) {
+    const offspring = split(cell);
+    cells.push(...offspring);
+  }
+  growthIndex++;
+  setTimeout(growStep, 200);
+}
+
+function loop() {
+  animate();
+  requestAnimationFrame(loop);
+}
+
+loop();
+setTimeout(growStep, 500);
+</script>
