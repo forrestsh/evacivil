@@ -158,19 +158,19 @@ export default function EVAHomepage() {
           </div>
         </div>
         <div className="text-center mt-12">
-          {/* Star Animation */}
-          <div className="relative mb-8">
-            <div className="mandala-bg" style={{ position: 'relative', width: '300px', height: '300px', margin: '0 auto' }}>
-              <canvas id="cellularMandala" width="300" height="300"></canvas>
-            </div>
-          </div>
-          
           <a 
             href="/Manifesto.html" 
             className="inline-block px-6 py-2 border border-yellow-500 text-yellow-400 rounded hover:bg-yellow-500 hover:text-black transition"
           >
             Read the Manifesto
           </a>
+          
+          {/* Star Animation */}
+          <div className="relative mt-4">
+            <div className="mandala-bg" style={{ position: 'relative', width: '300px', height: '300px', margin: '0 auto', overflow: 'visible' }}>
+              <canvas id="cellularMandala" width="300" height="300"></canvas>
+            </div>
+          </div>
         </div>
       </section>
 
